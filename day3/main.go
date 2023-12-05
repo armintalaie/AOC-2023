@@ -1,45 +1,24 @@
-package main
+package day3
 
 import (
-	"bufio"
 	"fmt"
 	"log"
-	"os"
 	"regexp"
 	"strconv"
 )
 
-func day3(part int) {
+func Run(input []string, part int) {
 	switch part {
 	case 1:
-		day3part1()
+		part1(input)
 	case 2:
-		day3part2()
+		part2(input)
 	default:
 		fmt.Println("No function defined for this part")
 	}
 }
 
-func day3part1() {
-
-	file, err := os.Open("inputs/input3.txt")
-
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-
-	scanner := bufio.NewScanner(file)
-	var lines []string
-
-	for scanner.Scan() {
-		lines = append(lines, scanner.Text())
-	}
-
-	if err := scanner.Err(); err != nil {
-		log.Fatal(err)
-	}
-
+func part1(lines []string) {
 	sum := 0
 
 	var reg = regexp.MustCompile("(\\d)")
@@ -74,12 +53,10 @@ func applyCase(startNumIndex int, endNumIndex int, sum *int, lines []string, lin
 			endNumIndex = startNumIndex
 		}
 		start, err := strconv.Atoi(lines[lineIndex][startNumIndex : endNumIndex+1])
-		// fmt.Println(startNumIndex, endNumIndex, start)
 		if err != nil {
 			log.Fatal(err)
 		}
 		if isSuitable(startNumIndex, endNumIndex, lineIndex, lines) {
-			// fmt.Println(startNumIndex, endNumIndex, start)
 			*sum += start
 		}
 	}
@@ -88,9 +65,6 @@ func applyCase(startNumIndex int, endNumIndex int, sum *int, lines []string, lin
 
 func isSuitable(start int, end int, row int, lines []string) bool {
 	var reg = regexp.MustCompile("[^\\d.]")
-	// testString := "*"
-
-	// fmt.Println(reg.MatchString(testString))
 
 	for i := max(0, start-1); i <= min(end+1, len(lines[0])-1); i++ {
 		for j := max(0, row-1); j <= min(row+1, len(lines)-1); j++ {
@@ -102,26 +76,7 @@ func isSuitable(start int, end int, row int, lines []string) bool {
 	return false
 }
 
-func day3part2() {
-
-	file, err := os.Open("inputs/input3.txt")
-
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-
-	scanner := bufio.NewScanner(file)
-	var lines []string
-
-	for scanner.Scan() {
-		lines = append(lines, scanner.Text())
-	}
-
-	if err := scanner.Err(); err != nil {
-		log.Fatal(err)
-	}
-
+func part2(lines []string) {
 	sum := 0
 
 	var reg = regexp.MustCompile("[\\*]")
@@ -129,7 +84,7 @@ func day3part2() {
 		for j, char := range line {
 			if reg.MatchString(string(char)) {
 				gearRatio := findGearRatio(lines, j, i)
-				fmt.Println(gearRatio)
+				// fmt.Println(gearRatio)
 				sum += gearRatio
 			}
 		}
@@ -145,7 +100,7 @@ func findGearRatio(lines []string, index int, row int) int {
 	for i := max(0, row-1); i <= min(row+1, len(lines)-1); i++ {
 		for j := max(0, index-1); j <= min(index+1, len(lines[0])-1); j++ {
 			if reg.MatchString(string(lines[i][j])) {
-				fmt.Println(i, j, lines[i][j], lines[i], index, row)
+				// fmt.Println(i, j, lines[i][j], lines[i], index, row)
 
 				findNumber(lines, j, i, &nums)
 			}
@@ -153,7 +108,7 @@ func findGearRatio(lines []string, index int, row int) int {
 	}
 
 	prod := 1
-	fmt.Print(nums)
+	// fmt.Print(nums)
 
 	if len(nums) == 0 {
 		return 0
@@ -194,7 +149,6 @@ func findNumberHelper(lines []string, index int, row int) int {
 					endNumIndex = startNumIndex
 				}
 				start, err := strconv.Atoi(lines[row][startNumIndex : endNumIndex+1])
-				// fmt.Println(startNumIndex, endNumIndex, start)
 				if err != nil {
 					log.Fatal(err)
 				}
@@ -211,7 +165,6 @@ func findNumberHelper(lines []string, index int, row int) int {
 			endNumIndex = startNumIndex
 		}
 		start, err := strconv.Atoi(lines[row][startNumIndex : endNumIndex+1])
-		// fmt.Println(startNumIndex, endNumIndex, start)
 		if err != nil {
 			log.Fatal(err)
 		}

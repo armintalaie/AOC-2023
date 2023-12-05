@@ -18,34 +18,29 @@ where day is the day number and part is either 1 or 2.
 
 ## File Template
 
-this is a sample template for day 3. Copy and paste this into a new file and replace the day number with the correct day number.
+this is a sample template for day 365. Copy and paste this into a new folder e.g. `day365` and create a `main.go` file.
 text inputs are stored in the inputs folder. The input file name is the day number with the .txt extension.
+In the root dir\'s `main.go` add the new package and the entry for the function mapper.
 
 ```Go
-package main
+package day365
 
 import (
  "fmt"
 )
 
-func day3(part int) {
- fmt.Println("Day 3")
+func Run(input []string, part int) {
  switch part {
  case 1:
-  day3part1()
+  part1(input)
  case 2:
-  day3part2()
+  part2(input)
  default:
   fmt.Println("No function defined for this part")
  }
 }
 
-func day3part1() {
-
-}
-
-func day3part2() {
-
-}
+func part1(lines []string) {}
+func part2(lines []string) {}
 
 ```

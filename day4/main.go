@@ -1,46 +1,24 @@
-package main
+package day4
 
 import (
-	"bufio"
 	"fmt"
-	"log"
-	"os"
 	"regexp"
 	"strconv"
 	"strings"
 )
 
-func day4(part int) {
+func Run(input []string, part int) {
 	switch part {
 	case 1:
-		day4part1()
+		part1(input)
 	case 2:
-		day4part2()
+		part2(input)
 	default:
 		fmt.Println("No function defined for this part")
 	}
 }
 
-func day4part1() {
-
-	file, err := os.Open("inputs/input4.txt")
-
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-
-	scanner := bufio.NewScanner(file)
-	var lines []string
-
-	for scanner.Scan() {
-		lines = append(lines, scanner.Text())
-	}
-
-	if err := scanner.Err(); err != nil {
-		log.Fatal(err)
-	}
-
+func part1(lines []string) {
 	sum := 0
 
 	var reg = regexp.MustCompile("(\\d+)")
@@ -50,7 +28,6 @@ func day4part1() {
 		groupLeft := reg.FindAllString(strings.TrimSpace(numberGroups[0]), -1)
 		elfNumbers := map[int]int{}
 		groupRight := reg.FindAllString(strings.TrimSpace(numberGroups[1]), -1)
-
 		reward := 0
 
 		for _, numStr := range groupRight {
@@ -60,9 +37,8 @@ func day4part1() {
 
 		for _, numStr := range groupLeft {
 			num, _ := strconv.Atoi(string(numStr))
-			// fmt.Println(num, elfNumbers[num])
 			if elfNumbers[num] > 0 {
-				elfNumbers[num]-- // ?
+				elfNumbers[num]--
 				if reward >= 1 {
 					reward *= 2
 				} else {
@@ -70,33 +46,13 @@ func day4part1() {
 				}
 			}
 		}
-
-		// fmt.Println(groupLeft, groupRight, reward)
 		sum += reward
 
 	}
 	fmt.Println(sum)
 }
 
-func day4part2() {
-
-	file, err := os.Open("inputs/input4.txt")
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-
-	scanner := bufio.NewScanner(file)
-	var lines []string
-
-	for scanner.Scan() {
-		lines = append(lines, scanner.Text())
-	}
-
-	if err := scanner.Err(); err != nil {
-		log.Fatal(err)
-	}
-
+func part2(lines []string) {
 	copies := 0
 	wonCopies := map[int]int{}
 

@@ -1,30 +1,42 @@
 package main
 
 import (
+	"advent/main/day1"
+	"advent/main/day2"
+	"advent/main/day3"
+	"advent/main/day4"
+	"bufio"
 	"fmt"
+	"log"
 	"os"
 	"strconv"
 	"time"
 )
 
-type dayFunction func(num int)
+type dayFunction func(input []string, num int)
+const INPUT_LOCATION = "inputs"
 
-var dayFunctions = map[string]dayFunction{
-	"1": day1,
-	"2": day2,
-	"3": day3,
-	"4": day4,
+var dayFunctions = map[int]dayFunction{
+	1: day1.Run,
+	2: day2.Run,
+	3: day3.Run,
+	4: day4.Run,
+	// "5": day5.Run,
 }
 
 func main() {
 	start := time.Now()
-	day := os.Args[1]
-	part, _ := strconv.Atoi(os.Args[2])
+	day, err := strconv.Atoi(os.Args[1])
+	part, err2 := strconv.Atoi(os.Args[2])
+
+	if err != nil || err2 != nil {
+		panic("Invalid argument format should be <day number> <part number>")
+	}
 
 	if dayFunc, ok := dayFunctions[day]; ok {
-		fmt.Printf("Running day %s\t Part %d\n", day, part)
+		fmt.Printf("Running Day %d, Part %d\n", day, part)
 		fmt.Println("------------------------------")
-		dayFunc(part)
+		dayFunc(getInputFile(day), part)
 		fmt.Println("------------------------------")
 	} else {
 		fmt.Println("No function defined for this day")
@@ -32,4 +44,29 @@ func main() {
 
 	elapsed := time.Since(start)
 	fmt.Printf("Execution took %s\n", elapsed)
+}
+
+
+func getInputFile(day int) []string {
+
+	path := fmt.Sprintf("%s/input%d.txt", INPUT_LOCATION, day)
+	file, err := os.Open(path)
+
+	if err != nil {
+		fmt.Println(err)
+		panic(err)
+	}
+
+	scanner := bufio.NewScanner(file)
+	var lines []string
+
+	for scanner.Scan() {
+		lines = append(lines, scanner.Text())
+	}
+
+	if err := scanner.Err(); err != nil {
+		log.Fatal(err)
+	}
+
+	return lines
 }

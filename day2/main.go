@@ -1,32 +1,24 @@
-package main
+package day2
 
 import (
-	"bufio"
 	"fmt"
 	"log"
-	"os"
 	"strconv"
 	"strings"
 )
 
-func day2(part int) {
+func Run(input []string, part int) {
 	switch part {
 	case 1:
-		day2part1()
+		part1(input)
 	case 2:
-		day2part2()
+		part2(input)
 	default:
 		fmt.Println("No function defined for this part")
 	}
 }
 
-func day2part1() {
-	file, err := os.Open("inputs/input2.txt")
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-
+func part1(lines []string) {
 	allowedCubes := map[string]int{
 		"red":   12,
 		"green": 13,
@@ -34,18 +26,6 @@ func day2part1() {
 	}
 
 	idSum := 0
-
-	scanner := bufio.NewScanner(file)
-	var lines []string
-
-	for scanner.Scan() {
-		lines = append(lines, scanner.Text())
-	}
-
-	if err := scanner.Err(); err != nil {
-		log.Fatal(err)
-	}
-
 	for _, line := range lines {
 		game := strings.Split(line, ":")
 		gameNumber := game[0][5:]
@@ -72,8 +52,6 @@ func day2part1() {
 
 			}
 
-			// fmt.Println(cubes)
-
 			if cubes["red"] > allowedCubes["red"] || cubes["blue"] > allowedCubes["blue"] || cubes["green"] > allowedCubes["green"] {
 				allowedGame = false
 				break
@@ -90,37 +68,13 @@ func day2part1() {
 	}
 
 	fmt.Println(idSum)
-
 }
 
-func day2part2() {
-	file, err := os.Open("inputs/input2.txt")
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-
+func part2(lines []string) {
 	sumPowers := int64(0)
-
-	scanner := bufio.NewScanner(file)
-	var lines []string
-
-	for scanner.Scan() {
-		lines = append(lines, scanner.Text())
-	}
-
-	if err := scanner.Err(); err != nil {
-		log.Fatal(err)
-	}
 
 	for _, line := range lines {
 		game := strings.Split(line, ":")
-		// gameNumber := game[0][5:]
-		// gameNumberInt, err := strconv.Atoi(gameNumber)
-		if err != nil {
-			log.Fatal(err)
-		}
-
 		rounds := strings.Split(game[1], ";")
 
 		minCubes := map[string]int{
@@ -150,13 +104,10 @@ func day2part2() {
 		}
 
 		if allowedGame {
-			// fmt.Println(minCubes)
 			roundPower := minCubes["red"] * minCubes["blue"] * minCubes["green"]
-
 			sumPowers = sumPowers + int64(roundPower)
 		}
 	}
 
 	fmt.Println(sumPowers)
-
 }

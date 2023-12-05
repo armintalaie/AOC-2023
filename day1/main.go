@@ -1,22 +1,18 @@
-package main
+package day1
 
 import (
-	"bufio"
 	"fmt"
-	"log"
-	"os"
 	"regexp"
 	"strconv"
 	"strings"
 )
 
-func day1(part int) {
-
+func Run(input []string, part int) {
 	switch part {
 	case 1:
-		day1part1()
+		part1(input)
 	case 2:
-		day1part2()
+		part2(input)
 	default:
 		fmt.Println("No function defined for this part")
 	}
@@ -47,24 +43,7 @@ func replaceWordsWithNumbers(inputString string) string {
 	return inputString
 }
 
-func day1part1() {
-	file, err := os.Open("inputs/input1.txt")
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-
-	scanner := bufio.NewScanner(file)
-	var lines []string
-
-	for scanner.Scan() {
-		lines = append(lines, scanner.Text())
-	}
-
-	if err := scanner.Err(); err != nil {
-		log.Fatal(err)
-	}
-
+func part1(lines []string) {
 	re, err := regexp.Compile("\\d{1}")
 	if err != nil {
 		fmt.Println(err)
@@ -72,7 +51,6 @@ func day1part1() {
 	}
 
 	sum := 0
-
 	for _, line := range lines {
 		line = replaceWordsWithNumbers(line)
 		values := re.FindAllString(line, -1)
@@ -80,27 +58,9 @@ func day1part1() {
 		sum = sum + curr
 	}
 	fmt.Println(sum)
-
 }
 
-func day1part2() {
-	file, err := os.Open("inputs/input1.txt")
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-
-	scanner := bufio.NewScanner(file)
-	var lines []string
-
-	for scanner.Scan() {
-		lines = append(lines, scanner.Text())
-	}
-
-	if err := scanner.Err(); err != nil {
-		log.Fatal(err)
-	}
-
+func part2(lines []string) {
 	re, err := regexp.Compile("\\d{1}")
 	if err != nil {
 		fmt.Println(err)
